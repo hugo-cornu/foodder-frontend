@@ -1,7 +1,49 @@
 import "./App.css"
+import React from "react"
+import PlacesAutocomplete, { geocodeByAddress } from "react-places-autocomplete"
 
 function App() {
-  return <div className="App">FOODDER</div>
+  const [address, setAddress] = React.useState("")
+
+  const handleSelect = async (value) => {
+    const results = await geocodeByAddress(value)
+    console.log("results:", results)
+    setAddress(value)
+  }
+
+  return (
+    <div>
+      <PlacesAutocomplete
+        value={address}
+        onChange={setAddress}
+        onSelect={handleSelect}
+      >
+        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+          <div>
+            <input
+              {...getInputProps({ placeholder: "Type city or address" })}
+            />
+
+            <div>
+              {loading ? <div>...loading</div> : null}
+
+              {suggestions.map((suggestion) => {
+                const style = {
+                  backgroundColor: suggestion.active ? "#41b6e6" : "#fff",
+                }
+
+                return (
+                  <div {...getSuggestionItemProps(suggestion, { style })}>
+                    {suggestion.description}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
+      </PlacesAutocomplete>
+    </div>
+  )
 }
 
 export default App
