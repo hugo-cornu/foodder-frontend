@@ -11,12 +11,23 @@ function App() {
     setAddress(value)
   }
 
+  // Gonstrain Google Maps API predictions to certain place types
+  const searchOptions = {
+    types: [
+      "country",
+      "locality",
+      "sublocality",
+      "administrative_area_level_3",
+    ],
+  }
+
   return (
     <div>
       <PlacesAutocomplete
         value={address}
         onChange={setAddress}
         onSelect={handleSelect}
+        searchOptions={searchOptions}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
